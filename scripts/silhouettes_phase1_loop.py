@@ -27,8 +27,6 @@ if __name__ == '__main__':
     kwargs = {
         'nb_epochs': args.nb_epochs,
         'fb': args.fb,
-        'shift': 20,
-        'weighting': True,
         'gpu_id': args.gpu_id
     }
 
