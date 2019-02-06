@@ -1,4 +1,4 @@
-# SK-reg
+# SK-regularization (code in progress)
 
 Code for the paper "SK-reg: A smooth kernel regularizer for convolutional neural networks" (Feinman & Lake, 2019).
 
