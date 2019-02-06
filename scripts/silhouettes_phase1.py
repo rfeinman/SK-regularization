@@ -16,7 +16,7 @@ from skreg.util import preprocess_images, preprocess_images_fb
 from skreg.util import get_class_weights, shuffle_images
 from skreg.models import cnn
 
-def train_phase1(nb_epochs, results_dir, weighting, data_dir, gpu_id, fb, shuffle_val=False):
+def train_phase1(nb_epochs, results_dir, data_dir, gpu_id, fb, shuffle_val=False):
     # set TF session
     gpu_options = tf.GPUOptions(visible_device_list=gpu_id)
     sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
@@ -54,12 +54,8 @@ def train_phase1(nb_epochs, results_dir, weighting, data_dir, gpu_id, fb, shuffl
     print('Y_valid shape: ', Y_valid.shape)
 
     # class weights
-    if weighting:
-        print('Using class weighting to balance class counts')
-        class_weights = get_class_weights(Y_train)
-    else:
-        print('No class weighting')
-        class_weights = None
+    print('Using class weighting to balance class counts')
+    class_weights = get_class_weights(Y_train)
 
     # set other params
     bsize = min(32, int(X_train.shape[0]/5))
@@ -143,7 +139,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--nb_epochs', default=300, type=int)
     parser.add_argument('--fb', default=False, action='store_true')
-    parser.add_argument('--weighting', default=False, action='store_true')
     parser.add_argument('--shuffle_val', default=False, action='store_true')
     parser.add_argument('--results_dir', default='./phase1_tmp', type=str)
     parser.add_argument('--gpu_id', default='0', type=str)
