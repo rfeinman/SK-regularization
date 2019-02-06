@@ -75,7 +75,7 @@ def train_phase2(nb_epochs, results_dir, data_dir, gpu_id, correlated,
         print('Using correlated Gaussian prior')
         model = cnn_sk(
             input_shape=img_shape, nb_classes=nb_classes, use_fc=False,
-            cov_dir='../data/gaussian_fit_d200_b32',
+            cov_dir='../data/gaussian_fit',
             scale_conv=scale_conv, scale_fc=scale_fc, cg_init=True
         )
     else:
