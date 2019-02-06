@@ -180,3 +180,21 @@ def shuffle_images(X_valid, Y_valid, rep=5, seed=12):
     X, Y = np.concatenate(X), np.concatenate(Y)
 
     return X, Y
+
+def get_image_dataset(data_dir, img_size=(200,200), batch_size=32):
+    datagen = ImageDataGenerator()
+    flow = datagen.flow_from_directory(
+        data_dir, target_size=img_size, batch_size=batch_size, shuffle=False
+    )
+    nb_batches = int(np.ceil(flow.n/batch_size))
+    flow.reset()
+    X, Y = [], []
+    for i, (X_batch, Y_batch) in enumerate(flow):
+        if i >= nb_batches:
+            break
+        X.append(X_batch)
+        Y.append(Y_batch)
+    X, Y = np.concatenate(X), np.concatenate(Y)
+    X /= 255.
+
+    return X, Y

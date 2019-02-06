@@ -1,6 +1,5 @@
 from __future__ import division, print_function
 import argparse
-import getpass
 import os
 import shutil
 import time
@@ -12,6 +11,7 @@ from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint
 from keras.preprocessing.image import ImageDataGenerator
 
+from skreg.util import get_image_dataset
 from skreg.util import preprocess_images, preprocess_images_fb
 from skreg.util import get_class_weights, shuffle_images
 from skreg.models import cnn
@@ -32,12 +32,10 @@ def train_phase1(nb_epochs, results_dir, data_dir, gpu_id, fb):
     # load data
     if fb:
         print('using foreground-background colors')
-        X = np.load(os.path.join(data_dir, 'X_phase1_fb.npy'))
-        Y = np.load(os.path.join(data_dir, 'Y_phase1_fb.npy'))
-        X = preprocess_images_fb(X)
+        raise NotImplementedError
+        #X = preprocess_images_fb(X)
     else:
-        X = np.load(os.path.join(data_dir, 'X_phase1.npy'))
-        Y = np.load(os.path.join(data_dir, 'Y_phase1.npy'))
+        X, Y = get_image_dataset(data_dir)
         X = preprocess_images(X)
     img_shape = X.shape[1:]
     nb_classes = Y.shape[1]
@@ -139,18 +137,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--nb_epochs', default=300, type=int)
     parser.add_argument('--fb', default=False, action='store_true')
+    parser.add_argument('--data_dir', default='../data/silhouettes/phase1', type=str)
     parser.add_argument('--results_dir', default='./phase1_tmp', type=str)
     parser.add_argument('--gpu_id', default='0', type=str)
     args = parser.parse_args()
     kwargs = vars(args)
-
-    # set data_dir location
-    uname = getpass.getuser()
-    if uname == 'rfeinman':
-        kwargs['data_dir'] = '/Users/rfeinman/Data/BrownSilhouettes/preprocessed_200'
-    elif uname == 'feinman':
-        kwargs['data_dir'] = '/data/feinman/BrownSilhouettes/preprocessed_200'
-    else:
-        raise Exception
 
     train_phase1(**kwargs)
