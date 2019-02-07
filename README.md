@@ -16,29 +16,29 @@ in `requirements.txt`. After cloning this repository, add the path to the reposi
 First, download the pre-processed silhouettes image dataset from the following link:
 <http://www.cns.nyu.edu/~reuben/files/silhouettes.zip>.
 
-Unzip the folder and place it into the `data/` directory. The dataset contains two sub-folders: `phase1` and `phase2`. The `phase1` folder contains an image dataset with the 20 Phase 1 classes we describe in our paper. The `phase2` directory contains a dataset with the 10 Phase 2 classes that we describe. Phase 2 classes are distinct from Phase 1.
+Unzip the folder and place it into the `data/` directory. The dataset contains two sub-folders: `phase1/` and `phase2/`. The `phase1/` folder contains an image dataset with the 20 Phase 1 classes we describe in our paper. The `phase2/` directory contains a dataset with the 10 Phase 2 classes that we describe. Phase 2 classes are distinct from Phase 1.
 
 ### Phase 1 silhouettes training
 
-Once you've downloaded & unzipped the silhouettes folder and placed it in the `data/` directory, you will next train the CNN on the Phase 1 (20-way) classification task. From the `scripts/` directory, you can test a single training run with the following command:
+Once you've downloaded & unzipped the silhouettes folder and placed it in the `data/` directory, you will next train the CNN on the Phase 1 (20-way) classification task. From the `experiments/` directory, you can test a single training run with the following command:
 
     python silhouettes_phase1.py
 
-This will train the CNN for 300 epochs using a single GPU (if available), and performance metrics for the train and validation sets will be reported. The model will be saved in a folder called `phase1_tmp`. You can discard the save folder; this was simply a test.
+This will train the CNN for 300 epochs using a single GPU (if available), and performance metrics for the train and validation sets will be reported. The model will be saved in a folder called `phase1_tmp/`. You can discard the save folder; this was simply a test.
 
-Once you've tested the CNN, you can begin the phase 1 experiment loop. This loop will train the CNN 20 times, using a different random seed for each training run. The resulting CNN will be saved for each training run. To begin the training loop, run the following command:
+Once you've tested the CNN, you can begin the phase 1 experiment loop. This loop will train the CNN 20 times, using a different random seed for each training run. The resulting CNN will be saved for each training run. To begin the training loop, run the following command from the `experiments/` directory:
 
     python silhouettes_phase1_loop.py
     
-Results from the 20 trials will be saved to the `data` directory in a folder called `kernel_dataset`. You will be using the learned convolution kernels from these 20 training runs to fit a multivariate Gaussian. 
+Results from the 20 trials will be saved to the `data/` directory in a folder called `kernel_dataset/`. You will be using the learned convolution kernels from these 20 training runs to fit a multivariate Gaussian. 
 
 ### Gaussian fitting
 
-To do - code demo in progress.
+Once you have completed Phase 1 training, with results saved in `data/kernel_dataset/`, you can now fit the Gaussians for each convolution layer of the CNN to obtain SK-reg parameters. To do so, cd to `experiments/` and open the Jupyter Notebook titled `fit_gaussians.ipynb`. Execute the notebook boxes in order. Once completed, you will have a new folder located at `data/gaussian_fit` containing the SK-reg parameters for each convolution layer. While executing this notebook, you can see some nice visualizations of the fitted Gaussians, and you can also see log-likelihood metrics for the Gaussian fits.
 
 ### Phase 2 silhouettes training
 
-Once you've fitted the Gaussian distributions to the kernels from phase 1, you can now apply SK-reg to a new learning task in phase 2. To train the CNN on the new Phase 2 (10-way) classification task, cd to the `scripts/` directory and run the following command:
+Once you've fitted the Gaussian distributions to the kernels from phase 1, you can now apply SK-reg to a new learning task in phase 2. To train the CNN on the new Phase 2 (10-way) classification task, cd to the `experiments/` directory and run the following command:
 
     python silhouettes_phase2.py --mode=<reg mode> --alpha=<reg weight>.
     
