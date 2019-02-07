@@ -16,7 +16,7 @@ from skreg.util import shuffle_images
 from skreg.models import cnn, cnn_sk
 
 
-def train_phase2(nb_epochs, results_dir, data_dir, gpu_id, correlated,
+def train_phase2(nb_epochs, results_dir, data_dir, gpu_id, mode,
                  scale_conv=1.):
 
     # set TF session
@@ -66,18 +66,20 @@ def train_phase2(nb_epochs, results_dir, data_dir, gpu_id, correlated,
     print('scale_conv: %0.2f' % scale_conv)
 
     # build CNN
-    if correlated:
+    if mode == 'sk':
         print('Using correlated Gaussian prior')
         model = cnn_sk(
             input_shape=img_shape, nb_classes=nb_classes, use_fc=False,
             cov_dir='../data/gaussian_fit', scale_conv=scale_conv, cg_init=True
         )
-    else:
+    elif mode == 'l2':
         print('Using independent Gaussian prior')
         model = cnn(
             input_shape=img_shape, nb_classes=nb_classes, use_fc=False,
             scale_conv=scale_conv,
         )
+    else:
+        raise Exception
     model.compile(
         optimizer=Adam(decay=decay),
         loss='categorical_crossentropy',
@@ -151,7 +153,7 @@ if __name__ == '__main__':
     # parse command line args
     parser = argparse.ArgumentParser()
     parser.add_argument('--nb_epochs', default=300, type=int)
-    parser.add_argument('--correlated', default=False, action='store_true')
+    parser.add_argument('--mode', default='l2', type=str)
     parser.add_argument('--scale_conv', default=1., type=float)
     parser.add_argument('--data_dir', default='../data/silhouettes/phase2', type=str)
     parser.add_argument('--results_dir', default='./phase2_tmp', type=str)
