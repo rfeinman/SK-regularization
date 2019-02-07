@@ -34,7 +34,7 @@ Results from the 20 trials will be saved to the `data/` directory in a folder ca
 
 ### Gaussian fitting
 
-Once you have completed Phase 1 training, with results saved in `data/kernel_dataset/`, you can now fit the Gaussians for each convolution layer of the CNN to obtain SK-reg parameters. To do so, cd to `experiments/` and open the Jupyter Notebook titled `fit_gaussians.ipynb`. Execute the notebook boxes in order. Once completed, you will have a new folder located at `data/gaussian_fit` containing the SK-reg parameters for each convolution layer. While executing this notebook, you can see some nice visualizations of the fitted Gaussians, and you can also see log-likelihood metrics for the Gaussian fits.
+Once you have completed Phase 1 training (with results saved in `data/kernel_dataset/`) you can now fit a multivariate Gaussian for each convolution layer of the CNN to obtain SK-reg parameters. To do so, cd to `experiments/` and open the Jupyter Notebook titled `fit_gaussians.ipynb`. Execute the notebook boxes in order. Once completed, you will have a new folder located at `data/gaussian_fit` containing the SK-reg parameters for each convolution layer. While executing this notebook, you can see some nice visualizations of the fitted Gaussians, and you can also see log-likelihood metrics for the Gaussian fits.
 
 ### Phase 2 silhouettes training
 
@@ -42,7 +42,7 @@ Once you've fitted the Gaussian distributions to the kernels from phase 1, you c
 
     python silhouettes_phase2.py --mode=<reg mode> --alpha=<reg weight>.
     
-where `<reg mode>` is one of either `l2` or `sk` and, and `<reg weight>` is a float specifying how much to weight regularization vs. classification loss. With parameter `--mode=sk` you will apply SK-reg, using the Gaussian covariance matrices acquired from phase 1. With parameter `--mode=l2` you will apply baseline L2 regularization. The optimal regularization weights for l2 and sk, determined via validated grid-search, are 4.29 and 2.57, respectively.
+where `<reg mode>` is one of either `l2` or `sk` and, and `<reg weight>` is a float specifying how much to weight regularization vs. classification loss. With parameter `--mode=sk` you will apply SK-reg, using the Gaussian covariance matrices acquired from phase 1. With parameter `--mode=l2` you will apply baseline L2 regularization. The optimal regularization weights for `l2` and `sk`, determined via validated grid-search, are 4.29 and 2.57, respectively.
 
 ### Phase 2 Tiny Imagenet training
 
