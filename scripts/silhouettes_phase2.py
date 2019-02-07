@@ -67,13 +67,13 @@ def train_phase2(nb_epochs, results_dir, data_dir, gpu_id, mode,
 
     # build CNN
     if mode == 'sk':
-        print('Using correlated Gaussian prior')
+        print('Using correlated Gaussian prior (SK-reg)')
         model = cnn_sk(
             input_shape=img_shape, nb_classes=nb_classes, use_fc=False,
             cov_dir='../data/gaussian_fit', scale_conv=scale_conv, cg_init=True
         )
     elif mode == 'l2':
-        print('Using independent Gaussian prior')
+        print('Using independent Gaussian prior (L2-reg)')
         model = cnn(
             input_shape=img_shape, nb_classes=nb_classes, use_fc=False,
             scale_conv=scale_conv,
