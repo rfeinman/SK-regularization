@@ -4,7 +4,6 @@ import time
 import shutil
 import argparse
 import numpy as np
-from sklearn.model_selection import train_test_split
 import tensorflow as tf
 import keras.backend as K
 from keras.optimizers import Adam
@@ -18,7 +17,7 @@ from skreg.models import cnn, cnn_sk
 
 
 def train_phase2(nb_epochs, results_dir, data_dir, gpu_id, correlated,
-                 scale_conv=1., scale_fc=1.):
+                 scale_conv=1.):
 
     # set TF session
     gpu_options = tf.GPUOptions(visible_device_list=gpu_id)
@@ -65,21 +64,19 @@ def train_phase2(nb_epochs, results_dir, data_dir, gpu_id, correlated,
     print('batch size: %i' % bsize)
     print('learning rate decay: %0.6f' % decay)
     print('scale_conv: %0.2f' % scale_conv)
-    # print('scale_fc: %0.2f' % scale_fc)
 
     # build CNN
     if correlated:
         print('Using correlated Gaussian prior')
         model = cnn_sk(
             input_shape=img_shape, nb_classes=nb_classes, use_fc=False,
-            cov_dir='../data/gaussian_fit',
-            scale_conv=scale_conv, scale_fc=scale_fc, cg_init=True
+            cov_dir='../data/gaussian_fit', scale_conv=scale_conv, cg_init=True
         )
     else:
         print('Using independent Gaussian prior')
         model = cnn(
             input_shape=img_shape, nb_classes=nb_classes, use_fc=False,
-            scale_conv=scale_conv, scale_fc=scale_fc
+            scale_conv=scale_conv,
         )
     model.compile(
         optimizer=Adam(decay=decay),
@@ -156,7 +153,6 @@ if __name__ == '__main__':
     parser.add_argument('--nb_epochs', default=300, type=int)
     parser.add_argument('--correlated', default=False, action='store_true')
     parser.add_argument('--scale_conv', default=1., type=float)
-    parser.add_argument('--scale_fc', default=1., type=float)
     parser.add_argument('--data_dir', default='../data/silhouettes/phase2', type=str)
     parser.add_argument('--results_dir', default='./phase2_tmp', type=str)
     parser.add_argument('--gpu_id', default='0', type=str)
