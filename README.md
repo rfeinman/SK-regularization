@@ -20,7 +20,7 @@ Unzip the folder and place it into the `data/` directory. The dataset contains t
 
 ### Phase 1 silhouettes training
 
-Once you've downloaded and unzipped the silhouettes folder and placed it in the `data/` directory, you will next train the CNN on the Phase 1 (20-way) classification task. From the `scripts/` directory, you can test a single training run with the following command:
+Once you've downloaded & unzipped the silhouettes folder and placed it in the `data/` directory, you will next train the CNN on the Phase 1 (20-way) classification task. From the `scripts/` directory, you can test a single training run with the following command:
 
     python silhouettes_phase1.py
 
