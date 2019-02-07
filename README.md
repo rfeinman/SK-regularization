@@ -30,7 +30,7 @@ Once you've tested the CNN, you can begin the phase 1 experiment loop. This loop
 
     python silhouettes_phase1_loop.py
     
-Results from the 20 trials will be saved to the `data/` directory in a folder called `kernel_dataset/`. You will be using the learned convolution kernels from these 20 training runs to fit a multivariate Gaussian. 
+Results from the 20 trials will be saved to the `data/` directory in a folder called `kernel_dataset/`. You will be using the learned convolution kernels from these 20 training runs to determine the covariance parameters of SK-reg. 
 
 ### Gaussian fitting
 
