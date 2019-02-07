@@ -47,3 +47,17 @@ where `<reg mode>` is one of either `l2` or `sk` and, and `<reg weight>` is a fl
 ### Phase 2 Tiny Imagenet training
 
 To do - code demo in progress.
+
+
+## Citing this work
+
+Please use the following BibTeX entry when citing this paper:
+
+```
+@article{Feinman2019,
+  title={SK-reg: A smooth kernel regularizer for convolutional neural networks},
+  author={Reuben Feinman and Brenden M. Lake},
+  journal={arXiv preprint arXiv:TODO},
+  year={2019}
+}
+```
