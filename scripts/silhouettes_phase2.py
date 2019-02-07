@@ -33,16 +33,13 @@ def train_phase2(nb_epochs, results_dir, data_dir, gpu_id, correlated,
     os.mkdir(results_dir)
 
     # load data
-    X, Y = get_image_dataset(data_dir)
-    X_train, X_test, Y_train, Y_test = train_test_split(
-        X, Y, train_size=0.5, random_state=3, stratify=np.where(Y)[1]
-    )
-    X_train, X_valid, Y_train, Y_valid = train_test_split(
-        X_train, Y_train, train_size=0.5, random_state=3,
-        stratify=np.where(Y_train)[1]
-    )
+    X_train, Y_train = get_image_dataset(os.path.join(data_dir, 'train'))
+    X_valid, Y_valid = get_image_dataset(os.path.join(data_dir, 'valid'))
+    X_test, Y_test = get_image_dataset(os.path.join(data_dir, 'test'))
+    # add noise to valid & test sets
     X_valid, Y_valid = shuffle_images(X_valid, Y_valid, rep=5)
     X_test, Y_test = shuffle_images(X_test, Y_test, rep=5)
+
     print('X_train shape: ', X_train.shape)
     print('Y_train shape: ', Y_train.shape)
     print('X_valid shape: ', X_valid.shape)
@@ -67,8 +64,8 @@ def train_phase2(nb_epochs, results_dir, data_dir, gpu_id, correlated,
         decay = 0.
     print('batch size: %i' % bsize)
     print('learning rate decay: %0.6f' % decay)
-    print('scale_conv: %0.1f' % scale_conv)
-    # print('scale_fc: %0.1f' % scale_fc)
+    print('scale_conv: %0.2f' % scale_conv)
+    # print('scale_fc: %0.2f' % scale_fc)
 
     # build CNN
     if correlated:
@@ -134,7 +131,11 @@ def train_phase2(nb_epochs, results_dir, data_dir, gpu_id, correlated,
           (train_losses[best_ix], train_CCEs[best_ix], train_accs[best_ix]))
     print('BEST - val_loss: %0.4f - val_ce: %0.4f - val_acc: %0.4f' %
           (valid_losses[best_ix], valid_CCEs[best_ix], valid_accs[best_ix]))
-    print('')
+
+    # load best model, test on holdout set
+    model.load_weights(weights_file)
+    _, test_CCE, test_acc = model.evaluate(X_test, Y_test, verbose=False)
+    print('test_ce: %0.4f - test_acc: %0.4f \n' % (test_CCE, test_acc))
 
     # save results
     np.save(os.path.join(results_dir,'train_losses.npy'), train_losses)
