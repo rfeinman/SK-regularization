@@ -49,7 +49,7 @@ where `<reg mode>` is one of either `l2` or `sk` and, and `<reg weight>` is a fl
 To do - code demo in progress.
 
 
-## 3) Citing this work
+## 3) Citing this paper
 
 Please use the following BibTeX entry when citing this paper:
 
