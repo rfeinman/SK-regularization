@@ -12,7 +12,7 @@ from keras.callbacks import ModelCheckpoint
 from keras.preprocessing.image import ImageDataGenerator
 
 from skreg.util import get_image_dataset
-from skreg.util import preprocess_images, preprocess_images_fb
+from skreg.util import preprocess_images
 from skreg.util import get_class_weights, shuffle_images
 from skreg.models import cnn
 
@@ -33,7 +33,7 @@ def train_phase1(nb_epochs, results_dir, data_dir, gpu_id, fb):
     if fb:
         print('using foreground-background colors')
         raise NotImplementedError
-        #X = preprocess_images_fb(X)
+        #X = preprocess_images(X, fb=True)
     else:
         X, Y = get_image_dataset(data_dir)
         X = preprocess_images(X)

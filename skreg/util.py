@@ -105,27 +105,13 @@ def normalize(X, mean, std):
     X[..., 1] /= std[1]
     X[..., 2] /= std[2]
 
-def preprocess_images(X):
-    mean = np.asarray([0.8406, 0.8420, 0.8554], dtype=np.float32)
-    std = np.asarray([0.3160, 0.3158, 0.2952], dtype=np.float32)
-    assert len(X.shape) == 4 and X.shape[-1] == 3
-    X_new = np.copy(X).astype(np.float32)
-
-    # convert [0,255] scale to [0,1] if needed
-    vmin = X_new[:20].min()
-    vmax = X_new[:20].max()
-    if vmax > 1:
-        assert vmin >= 0 and vmax <= 255
-        X_new = X_new / 255.
-
-    # z-score
-    normalize(X_new, mean, std)
-
-    return X_new
-
-def preprocess_images_fb(X):
-    mean = np.asarray([0.4973, 0.4899, 0.5024], dtype=np.float32)
-    std = np.asarray([0.2775, 0.2862, 0.2831], dtype=np.float32)
+def preprocess_images(X, fb=False):
+    if fb:
+        mean = np.asarray([0.4973, 0.4899, 0.5024], dtype=np.float32)
+        std = np.asarray([0.2775, 0.2862, 0.2831], dtype=np.float32)
+    else:
+        mean = np.asarray([0.8406, 0.8420, 0.8554], dtype=np.float32)
+        std = np.asarray([0.3160, 0.3158, 0.2952], dtype=np.float32)
     assert len(X.shape) == 4 and X.shape[-1] == 3
     X_new = np.copy(X).astype(np.float32)
 
