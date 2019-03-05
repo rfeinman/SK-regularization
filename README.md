@@ -1,6 +1,6 @@
 # SK-regularization
 
-Code for the paper "SK-reg: A smooth kernel regularizer for convolutional neural networks" (Feinman & Lake, 2019).
+Code for the paper "Learning a smooth kernel regularizer for convolutional neural networks" (Feinman & Lake, 2019).
 
 ## 1) Requirements & setup
 This code repository requires Keras and TensorFlow. Keras must be
@@ -40,9 +40,9 @@ Once you have completed Phase 1 training (with results saved in `data/kernel_dat
 
 Once you've fitted the Gaussian distributions to the kernels from phase 1, you can now apply SK-reg to a new learning task in phase 2. To train the CNN on the new Phase 2 (10-way) classification task, cd to the `experiments/` directory and run the following command:
 
-    python silhouettes_phase2.py --mode=<reg mode> --alpha=<reg weight>.
+    python silhouettes_phase2.py --mode=<reg mode> --alpha=<reg scale>.
     
-where `<reg mode>` is one of either `l2` or `sk` and, and `<reg weight>` is a float specifying how much to weight regularization vs. classification loss. With parameter `--mode=sk` you will apply SK-reg, using the Gaussian covariance matrices acquired from phase 1. With parameter `--mode=l2` you will apply baseline L2 regularization. The optimal regularization weights for `l2` and `sk`, determined via validated grid-search, are 4.29 and 2.57, respectively.
+where `<reg mode>` is one of either `l2` or `sk` and, and `<reg scale>` is a float specifying how much to weight regularization vs. classification loss. This scale is multiplied by the original regularization weight (0.05) to get \lambda. With parameter `--mode=sk` you will apply SK-reg, using the Gaussian covariance matrices acquired from phase 1. With parameter `--mode=l2` you will apply baseline L2 regularization. The optimal regularization scales for `l2` and `sk`, determined via validated grid-search, are 4.29 and 2.57, respectively (\lambda values 0.214 and 0.129).
 
 ### Phase 2 Tiny Imagenet training
 
