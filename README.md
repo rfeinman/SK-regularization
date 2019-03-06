@@ -1,6 +1,6 @@
 # SK-regularization
 
-Code for the paper "Learning a smooth kernel regularizer for convolutional neural networks" (Feinman & Lake, 2019).
+Code for the paper "[Learning a smooth kernel regularizer for convolutional neural networks](https://arxiv.org/pdf/1903.01882.pdf)" (Feinman & Lake, 2019).
 
 ## 1) Requirements & setup
 This code repository requires Keras and TensorFlow. Keras must be
@@ -57,7 +57,7 @@ Please use the following BibTeX entry when citing this paper:
 @article{Feinman2019,
   title={Learning a smooth kernel regularizer for convolutional neural networks},
   author={Reuben Feinman and Brenden M. Lake},
-  journal={arXiv preprint arXiv:TODO},
+  journal={arXiv preprint arXiv:1903.01882},
   year={2019}
 }
 ```
